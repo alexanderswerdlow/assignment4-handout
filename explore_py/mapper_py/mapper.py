@@ -3,7 +3,6 @@
 Author(s): Kshitij Goel, Andrew Jong, Rebecca Martin, Wennie Tabib
 """
 
-
 class Mapper:
     """Occupancy grid mapper that uses the sensor to update the grid.
 
@@ -38,12 +37,12 @@ class Mapper:
     def update_miss(self, cell):
         """Update the logodds value for the cell where the ray passed through ("miss" case)."""
         # TODO: Assignment 2, Problem 1.3
-        self.update_logodds(cell, self.log_odds_miss)
+        raise NotImplementedError
 
     def update_hit(self, cell):
         """Update the logodds value for the cell where the ray terminated ("hit" case)."""
         # TODO: Assignment 2, Problem 1.3
-        self.update_logodds(cell, self.log_odds_hit)
+        raise NotImplementedError
 
     def add_ray(self, ray, max_range, max_height):
         """Add the input ray to the grid while accounting for the sensor's max range.
@@ -58,32 +57,7 @@ class Mapper:
                             was successful. The second element returns the end
                             point of the ray (for visualization purposes)
         """
-        start = ray.o
-        end = self.observer.observe_along_ray(ray, max_range, max_height)
-
-        if end is None:
-            return False, None
-
-        mag = abs(end - start) + 1e-6
-
-        # TODO: Assignment 2, Problem 1.3
-
-        overlength = False
-        if ((mag >= max_range) and (max_range > 0.0) or ((mag >= max_height) and (max_height > 0.0))):
-            overlength = True
-
-        success, raycells = self.grid.traverse(start, end)
-        if success:
-            for i in range(len(raycells) - 1):
-                self.update_miss(raycells[i])
-
-            if not overlength:
-                self.update_hit(raycells[-1])
-            else:
-                self.update_miss(raycells[-1])
-            return True, end
-        else:
-            return False, end
+        raise NotImplementedError
 
     def add_obs(self, pos):
         """Add the observation at the input position to the map."""

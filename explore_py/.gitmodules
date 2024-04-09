@@ -1,0 +1,3 @@
+[submodule "mapper_py"]
+	path = mapper_py
+	url = git@github.com:rislab/mapper_py.git

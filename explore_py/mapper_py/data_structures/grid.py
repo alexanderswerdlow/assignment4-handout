@@ -38,6 +38,19 @@ class Cell:
         else:
             raise TypeError('Argument type must be Cell.')
 
+    def __add__(self, second):
+        if isinstance(second, Cell):
+            return Cell(self.row + second.row, self.col + second.col, self.layer + second.layer)
+        elif isinstance(second, int):
+            return Cell(self.row + second, self.col + second, self.layer + second)
+        else:
+            raise TypeError('Argument type must be either int or Cell.')
+
+    def __mul__(self, second):
+        if isinstance(second, int):
+            return Cell(self.row * second, self.col * second, self.layer * second)
+        else:
+            raise TypeError('Argument type must be int.')
 
 class Point:
     """A point in the 3D space.
@@ -187,7 +200,7 @@ class Grid3D:
             idx: (int) Index in the data array for the cell
         """
         # TODO: Assignment 2, Problem 1.1 (test_data_structure)
-        return floor(cell.row * self.width * self.height + cell.col * self.height + cell.layer)
+        raise NotImplementedError
 
     def from_index(self, idx):
         """Return the cell in grid for the input index.
@@ -199,11 +212,7 @@ class Grid3D:
             cell: (Cell) Cell corresponding to the index.
         """
         # TODO: Assignment 2, Problem 1.1 (test_data_structure)
-        row = floor(idx / (self.width * self.height))
-        col = floor((idx - row * self.width * self.height) / self.height)
-        layer = idx - row * self.width * self.height - col * self.height
-
-        return Cell(row, col, layer)
+        raise NotImplementedError
 
     def get(self, idx):
         """Return the cell value corresponding to the input index.
@@ -215,41 +224,36 @@ class Grid3D:
             val: (float) Value in the data array for idx
         """
         # TODO: Assignment 2, Problem 1.1 (test_data_structure)
-        return self.data[idx]
+        raise NotImplementedError
 
     def get_cell(self, cell):
         """Return the cell value corresponding to the input index."""
         # TODO: Assignment 2, Problem 1.1 (test_data_structure)
         # Hint: Use the `to_index` and `get` methods.
-        idx = self.to_index(cell)
-        return self.get(idx)
+        raise NotImplementedError
 
     def get_row_col_layer(self, row, col, layer):
         """Return the cell value corresponding to the row and col."""
         # TODO: Assignment 2, Problem 1.1 (test_data_structure)
         # Hint: Use the `get_cell` method and the `Cell` constructor.
-        return self.get_cell(Cell(row, col, layer))
+        raise NotImplementedError
 
     def set(self, idx, value):
         """Set the cell to value corresponding to the input idx."""
         # TODO: Assignment 2, Problem 1.1 (test_data_structure)
-        self.data[idx] = value
+        raise NotImplementedError
 
     def set_cell(self, cell, value):
         """Set the cell to value corresponding to the input cell."""
         # TODO: Assignment 2, Problem 1.1 (test_data_structure)
         # Hint: Use `to_index` and `set` methods.
-        if cell.row < 0 or cell.row >= self.depth or cell.col < 0 or cell.col >= self.width or cell.layer < 0 or cell.layer >= self.height:
-            return False
-        idx = self.to_index(cell)
-        self.set(idx, value)
-        return True
+        raise NotImplementedError
 
     def set_row_col_layer(self, row, col, layer, value):
         """Set the cell to value corresponding to the input row and col."""
         # TODO: Assignment 2, Problem 1.1 (test_data_structure)
         # Hint: Use the `set_cell` method and the `Cell` constructor.
-        return self.set_cell(Cell(row, col, layer), value)
+        raise NotImplementedError
 
     def probability(self, logodds):
         """Convert input logodds to probability.
@@ -261,7 +265,7 @@ class Grid3D:
             prob: (float) Probability representation of occupancy.
         """
         # TODO: Assignment 2, Problem 1.1 (test_data_structure)
-        return 1.0 - (1.0 / (1.0 + np.exp(logodds)))
+        raise NotImplementedError
 
     def logodds(self, probability):
         """Convert input probability to logodds.
@@ -273,7 +277,7 @@ class Grid3D:
             prob: (float) Probability representation of occupancy.
         """
         # TODO: Assignment 2, Problem 1.1 (test_data_structure)
-        return np.log(probability / (1.0 - probability))
+        raise NotImplementedError
 
     def cell_to_point(self, cell):
         """Get the cell's lower-left corner in 2D point space.
@@ -285,16 +289,13 @@ class Grid3D:
             point: (Point) Lower-left corner in 2D space.
         """
         # TODO: Assignment 2, Problem 1.1 (test_data_structure)
-        x = float(cell.col) * self.resolution
-        y = float(cell.row) * self.resolution
-        z = float(cell.layer) * self.resolution
-        return Point(x, y, z)
+        raise NotImplementedError
 
     def cell_to_point_row_col_layer(self, row, col, layer):
         """Get the point for the lower-left corner of the cell represented by input row and col."""
         # TODO: Assignment 2, Problem 1.1 (test_data_structure)
         # Hint: Use the `cell_to_point` function and the `Cell` constructor.
-        return self.cell_to_point(Cell(row, col, layer))
+        raise NotImplementedError
 
     def point_to_cell(self, point):
         """Get the cell position (i.e., bottom left hand corner) given the point.
@@ -306,16 +307,12 @@ class Grid3D:
             cell: (Cell) Cell in the grid corresponding to the query point.
         """
         # TODO: Assignment 2, Problem 1.1 (test_traversal)
-        row = floor(point.y / self.resolution)
-        col = floor(point.x / self.resolution)
-        layer = floor(point.z / self.resolution)
-        return Cell(row, col, layer)
+        raise NotImplementedError
 
     def is_in_grid(self, cell):
         """Is the cell inside this grid? Return True if yes, False otherwise."""
         # TODO: Assignment 2, Problem 1.1 (test_traversal)
-        return ((cell.col < self.width) and (cell.row < self.depth) and (cell.layer < self.height)
-                and (cell.col >= 0) and (cell.row >= 0) and (cell.layer >= 0))
+        raise NotImplementedError
 
     # AJ TODO: need to convert this from 2D to 3D. this is still the 2D version
     def traverse(self, start, end):
@@ -338,110 +335,32 @@ class Grid3D:
                                 cell). Otherwise, success is False and raycells is None.
         """
         # TODO: Assignment 2, Problem 1.1 (test_traversal)
-
-        # Array of cells to return
-        raycells = []
-
-        start_cell = self.point_to_cell(start)
-        end_cell = self.point_to_cell(end)
-
-        curr_cell = Cell()
-        curr_cell = start_cell
-
-        # Make sure the start point is in the map
-        if not self.is_in_grid(start_cell):
-            print('Start point is not in the grid.')
-            return False, None
-        # Don't check the end point, we will terminate once the ray leaves the map.
-
-
-        # Corner case: Ray is in only one cell
-        # Solution: Return the starting cell
-        if start_cell == end_cell:  # shouldn't be necesary due to the while loop condition
-            raycells.append(start_cell)
-            return True, raycells
-
-        magnitude = abs(end - start) if start_cell != end_cell else 1.0  # avoid div by 0 error
-        direction = (end - start) / magnitude
-
-        cell_boundary = self.cell_to_point(curr_cell)
-
-        step_col = -1
-        if direction.x > 0.0:
-            # sets to the upper right corner instead of lower left corner
-            step_col = 1
-            cell_boundary.x += self.resolution
-
-        step_row = -1
-        if direction.y > 0.0:
-            step_row = 1
-            cell_boundary.y += self.resolution
-
-        step_layer = -1
-        if direction.z > 0.0:
-            step_layer = 1
-            cell_boundary.z += self.resolution
-
-        tmax = Point()
-        tdelta = Point()
-
-        # Corner cases: Horizontal and vertical rays
-        # Solution: set to inf, s.t. will never increment
-        tmax.x = (cell_boundary.x - start.x) * (1.0 / direction.x) if direction.x != 0.0 else float('inf')
-        tdelta.x = self.resolution * float(step_col) * (1.0 / direction.x) if direction.x != 0.0 else None # if None is ever incremented, will complain. shouldn't happen
-
-        tmax.y = (cell_boundary.y - start.y) * (1.0 / direction.y) if direction.y != 0.0 else float('inf')
-        tdelta.y = self.resolution * float(step_row) * (1.0 / direction.y) if direction.y != 0.0 else None
-        
-        tmax.z = (cell_boundary.z - start.z) * (1.0 / direction.z) if direction.z != 0.0 else float('inf')
-        tdelta.z = self.resolution * float(step_layer) * (1.0 / direction.z) if direction.z != 0.0 else None
-
-        while True:
-            # Invalid cell reached; exit with the currently traversed cells.
-            if not self.is_in_grid(curr_cell):
-                return True, raycells
-
-            # Add curr_cell to the traversed cells
-            raycells.append(copy(curr_cell))
-
-            # Escape after inserting the end cell once
-            if curr_cell == end_cell:
-                break
-
-            if tmax.x < tmax.y:
-                if tmax.x  < tmax.z:
-                    curr_cell.col += step_col
-                    tmax.x += tdelta.x
-                else:
-                    curr_cell.layer += step_layer
-                    tmax.z += tdelta.z
-            else:
-                if tmax.y < tmax.z:
-                    curr_cell.row += step_row
-                    tmax.y += tdelta.y
-                else:
-                    curr_cell.layer += step_layer
-                    tmax.z += tdelta.z
-
-        return True, raycells
+        raise NotImplementedError
 
     def is_cell_free(self, cell):
         """Is the cell free? Return True if yes, False otherwise."""
         # TODO: Assignment 2, Problem 1.3
         # Hint: Use `get_cell` and `free_thres`
-        val = self.get_cell(cell)
-        return val <= self.free_thres
+        raise NotImplementedError
 
     def is_cell_occupied(self, cell):
         """Is the cell occupied? Return True if yes, False otherwise."""
         # TODO: Assignment 2, Problem 1.3
         # Hint: Use `get_cell` and `occ_thres`
-        val = self.get_cell(cell)
-        return val >= self.occ_thres
+        raise NotImplementedError
 
     def is_cell_unknown(self, cell):
         """Is the cell unknown? Return True if yes, False otherwise."""
         # TODO: Assignment 2, Problem 1.3
         # Hint: Use `get_cell`, `occ_thres`, and `free_thres`
-        val = self.get_cell(cell)
-        return ((val < self.occ_thres) and (val > self.free_thres))
+        raise NotImplementedError
+
+    def cell_entropy(self, cell):
+        """Entropy of the input cell"""
+        # TODO: Assignment 4, Task 0.2
+        raise NotImplementedError
+
+    def map_entropy(self):
+        """Entropy of this map"""
+        # TODO: Assignment 4, Task 0.2
+        raise NotImplementedError

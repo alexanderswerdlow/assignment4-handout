@@ -35,11 +35,13 @@ class PointRobotState:
     def cell_from_pos(pos: Point, res: float, cell: Cell) -> None:
         cell.row = floor(pos.y / res)
         cell.col = floor(pos.x / res)
+        cell.layer = floor(pos.z / res)
 
     @staticmethod
     def pos_from_cell(cell: Cell, res: float, pos: Point) -> None:
         pos.x = (float(cell.col) + 0.5) * res
         pos.y = (float(cell.row) + 0.5) * res
+        pos.z = (float(cell.layer) + 0.5) * res
 
     def to_numpy(self):
-        return np.array([self.p.x, self.p.y])
+        return np.array([self.p.x, self.p.y, self.p.z])

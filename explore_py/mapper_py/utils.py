@@ -37,8 +37,7 @@ def json_to_grid3d(grid, filepath):
             col = int(cell[0])
             layer = int(cell[1])
             row = int(cell[2])
-            if (col >= 0 and row >= 0 and layer >= 0) and (col < grid.width and row < grid.depth and layer < grid.height):
-                grid.set_row_col_layer(row, col, layer, grid.max_clamp)
+            grid.set_row_col_layer(row, col, layer, grid.max_clamp)
 
     return grid
 
@@ -121,7 +120,7 @@ def visualize3d(grid, ax, val_fn=lambda x, v: x.probability(v)):
 
     ax.set_title(f"Grid3D, Cell Resolution={grid.resolution}m^3")
 
-    ax.set_aspect("equal")
+    # ax.set_aspect("equal")
     # ax.set_box_aspect([1,1,1])
 
     return ax

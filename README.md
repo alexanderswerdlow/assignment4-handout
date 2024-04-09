@@ -1,4 +1,4 @@
-# 16-362 Assignment 4: Exploration
+# 16-761 Assignment 4: Exploration
 
 Goal: In this assignment, you will implement data structures and algorithms for
 exploration using occupancy grid maps.
@@ -11,7 +11,7 @@ exploration using occupancy grid maps.
 This repository uses Git LFS. Perform the following in a terminal on your computer.
 
 ```bash
-git clone git@github.com:mral-cmu/assignment4-handout.git
+git clone git@github.com:mr-cmu/assignment4-handout.git
 cd assignment4-handout
 git lfs install
 git lfs pull
@@ -32,9 +32,8 @@ pip install cprint numpy matplotlib opencv-python scipy scikit-learn
 
 We assume a point-shape robot with a size equal to one cell in the occupancy grid map. The state of
 this robot is given by `PointRobotState` in `robot.py`. As in the mapping assignment, we assume that
-the robot is equipped with a 360 degree field-of-view range sensor (e.g. 2D LiDAR) of a maximum usable
-range `2.0m` and an angular resolution of `200` rays per scan. The robot can explore various environments
-provided in the `test_data/` folder.
+the robot is equipped with a 360 degree field-of-view range sensor (e.g. 3D LiDAR). The robot can 
+explore various environments provided in the `test_data/` folder.
 
 To set up this functionality correctly, we will rely on the solution to the mapping assignment (Assignment 2).
 Please complete the following task as part of the setup.
@@ -62,7 +61,7 @@ To measure the exploration progress, it is beneficial to track how the entropy o
 changes over time.
 
 > [!IMPORTANT]
-> **Task 0.2 (5 points)** Implement the functions `cell_entropy` and `map_entropy` in `Grid2D` class from
+> **Task 0.2 (5 points)** Implement the functions `cell_entropy` and `map_entropy` in `Grid3D` class from
 > `mapper_py/data_structures/grid.py`
 
 > [!NOTE]
@@ -78,7 +77,7 @@ changes over time.
 > crucial to understand when working on implementing the motion planners.
 
 Let us equip our point robot with a simple library of motion primitives that enables the robot to move
-in an 8-connected grid. For an illustration, consider this scenario:
+in an 26-connected grid. For a 2D illustration, consider this scenario:
 
 ![connected](https://github.com/mral-cmu/assignment4-handout/assets/7077226/67dbc238-c883-4b12-ac5c-14645505df6d)
 
@@ -194,13 +193,13 @@ You are expected to receive full credit if you see the output
 ```
 You will also see plots for the entropy reduction over timesteps.
 
-The available environments in `test_data/` are `charrow-map`, `office`, `maze-like`, and `simple-obstacle`
-(default is `simple-obstacle`).
+The available environments in `test_data/` are `simple_box` and `i_love_mr`
+(default is `simple_box`).
 
 For visualization, you run frontier-based exploration with `explore_test` script in this manner for any
 environment (`-env` option):
 ```
-python explore_test.py -planner_type frontier -env charrow-map
+python explore_test.py -planner_type frontier -env i_love_mr
 ```
 
 ## 4. Information-Theoretic Exploration
@@ -274,4 +273,4 @@ Note that we may regrade submissions after the deadline passes.
 ## References
 
 ## Author(s)
-Kshitij Goel, Wennie Tabib
+Rebecca Martin, Andrew Jong, Kshitij Goel, Wennie Tabib

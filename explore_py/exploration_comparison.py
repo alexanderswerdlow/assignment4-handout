@@ -38,7 +38,7 @@ def score_exploration(tester):
             E3 = tester.run(scenario=env, planner=MIPlanner)
         except RuntimeError or NotImplementedError:
             cprint.err(
-                "Exploring %s using Frontier-based exploration failed." % (env), interrupt=False)
+                "Exploring %s using MI-based exploration failed." % (env), interrupt=False)
 
         tester.reset()
 
@@ -78,8 +78,8 @@ def score_exploration(tester):
     score_4_2 = 0.0
 
     # For Tasks 3.1, 2.2, and 2.1
-    if len(frontier_faster_than_random) == 4:
-        if sum(frontier_faster_than_random) >= 3:
+    if len(frontier_faster_than_random) == len(envs):
+        if sum(frontier_faster_than_random) >= len(envs)-1:
             cprint.ok("[Tasks 3.1 and 2.2]: Full Credit.")
             score_3_1 = 1.0
         else:
@@ -90,8 +90,8 @@ def score_exploration(tester):
                     " methods are not correctly implemented.", interrupt=False)
 
     # For Task 4.2
-    if len(mi_faster_than_random) == 4:
-        if sum(mi_faster_than_random) >= 3 and sum(mi_faster_than_frontier) >= 2:
+    if len(mi_faster_than_random) == len(envs):
+        if sum(mi_faster_than_random) >= len(envs)-1 and sum(mi_faster_than_frontier) >= len(envs)-2:
             cprint.ok("[Task 4.2]: Full Credit.")
             score_4_2 = 1.0
         else:
@@ -105,15 +105,23 @@ def score_exploration(tester):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-max_time",
+    parser.add_argument("--max-time",
                         help="maximum duration of exploration",
                         type=int,
                         default=200)
+    parser.add_argument("--vis-on",
+                        help="turn visualization on",
+                        action='store_true')
+    parser.add_argument("--vis-off", help="turn visualization off",
+                        dest='vis_on', action='store_false')
+    parser.set_defaults(vis_on=True)
+
+
     args = parser.parse_args()
 
-    envs = ['simple-obstacle', 'office', 'maze-like', 'charrow-map']
+    envs = ['simple_box', 'i_love_mr', 'map_stairs', 'map_random_terrain']
 
-    tester = ExploreTest(args.max_time, vis_on=False)
+    tester = ExploreTest(args.max_time, vis_on=args.vis_on)
 
     scores = score_exploration(tester)
     print(scores)

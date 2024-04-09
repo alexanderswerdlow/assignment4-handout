@@ -31,7 +31,7 @@ class Ray:
             p: (Point) Point along this ray at distance `t`.
         """
         # TODO: Assignment 1, Problem 1.2
-        return self.o + (self.d * t)
+        raise NotImplementedError
 
     def to_numpy(self):
         return np.hstack((self.o.to_numpy(), self.d.to_numpy()))
@@ -68,12 +68,4 @@ class Sensor:
         # TODO: Assignment 2, Problem 1.2
         # Hint 1: Utilize the `endpoint` option in the `np.linspace` function.
         # Hint 2: Should not require using `self.max_range`.
-        rays = []
-        dir_vecs = [Point(np.cos(a), np.sin(a), float(h)) \
-                    for a in np.linspace(0.0, 2.0 * np.pi, int(self.num_rays/(2*self.max_height+1)), endpoint=False) \
-                    for h in range(-int(self.max_height), int(self.max_height+1), 1)]
-        for d in dir_vecs:
-            ray = Ray(pos, d / abs(d))
-            rays.append(ray)
-
-        return rays
+        raise NotImplementedError

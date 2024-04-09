@@ -1,12 +1,15 @@
-"""Classes for Robotic Exploration planning, 16-362: Mobile Robot Algorithms Laboratory
+"""Classes for Robotic Exploration planning, 16-761: Mobile Robot Algorithms Laboratory
 """
 
 import numpy as np
 import math
 from copy import copy
-from mapper_py.data_structures.grid import Cell, Point, Grid2D
+from mapper_py.data_structures.grid import Cell, Point, Grid3D
 from mapper_py.data_structures.sensor import Sensor
 from robot import PointRobotState
+
+from scipy.spatial import KDTree
+
 
 class SimplePrimitive:
     """A single motion primitive depicting the starting position and the direction of motion.
@@ -39,23 +42,49 @@ class SimplePrimitive:
         e.update_by(self.dir * step)
         return e
 
+    def __str__(self) -> str:
+        return f"Start: {self.start.p}, Direction: {self.dir}"
+
 
 class PrimitiveLibrary:
     """A library/list of simple motion primitives for a point robot operating on an occupancy grid.
 
     Attributes:
-        eight_conn: (list of Cell) Possible directions that the robot can move
+        prim_lib: (list of Cell) Possible directions that the robot can move
                     from a given position in an 8-connected way.
     """
-    eight_conn = []
-    eight_conn.append(Cell(-1, 0))
-    eight_conn.append(Cell(1, 0))
-    eight_conn.append(Cell(0, -1))
-    eight_conn.append(Cell(0, 1))
-    eight_conn.append(Cell(-1, -1))
-    eight_conn.append(Cell(1, -1))
-    eight_conn.append(Cell(-1, 1))
-    eight_conn.append(Cell(1, 1))
+    prim_lib = []
+    prim_lib.append(Cell(-1, 0, 0))
+    prim_lib.append(Cell(1, 0, 0))
+    prim_lib.append(Cell(0, -1, 0))
+    prim_lib.append(Cell(0, 1, 0))
+
+    prim_lib.append(Cell(-1, -1, 0))
+    prim_lib.append(Cell(1, -1, 0))
+    prim_lib.append(Cell(-1, 1, 0))
+    prim_lib.append(Cell(1, 1, 0))
+
+    prim_lib.append(Cell(0, 0, 1))
+
+    prim_lib.append(Cell(-1, 0, 1))
+    prim_lib.append(Cell(1, 0, 1))
+    prim_lib.append(Cell(0, -1, 1))
+    prim_lib.append(Cell(0, 1, 1))
+    prim_lib.append(Cell(-1, -1, 1))
+    prim_lib.append(Cell(1, -1, 1))
+    prim_lib.append(Cell(-1, 1, 1))
+    prim_lib.append(Cell(1, 1, 1))
+
+    prim_lib.append(Cell(0, 0, -1))
+
+    prim_lib.append(Cell(-1, 0, -1))
+    prim_lib.append(Cell(1, 0, -1))
+    prim_lib.append(Cell(0, -1, -1))
+    prim_lib.append(Cell(0, 1, -1))
+    prim_lib.append(Cell(-1, -1, -1))
+    prim_lib.append(Cell(1, -1, -1))
+    prim_lib.append(Cell(-1, 1, -1))
+    prim_lib.append(Cell(1, 1, -1))
 
     def __init__(self, library: list = []):
         """Initialize the list of motion primitives"""
@@ -80,35 +109,38 @@ class PrimitiveLibrary:
         return L
 
     @classmethod
-    def eight_connected(cls, state: PointRobotState):
-        """Generate 8-connected motion primitive library from the state `state`."""
+    def twentysix_connected(cls, state: PointRobotState):
+        """Generate 26-connected motion primitive library from the state `state`."""
         return cls(library=PrimitiveLibrary.generate_primitives(state,
-                                                                PrimitiveLibrary.eight_conn))
+                                                                PrimitiveLibrary.prim_lib))
+    
+    def __str__(self) -> str:
+        return f"Primitive Library: {self.library}"
 
 
 class ExplorationPlanner:
     """Base class for a motion planner within an exploration system."""
 
-    def __init__(self, map: Grid2D, state: PointRobotState):
+    def __init__(self, map: Grid3D, state: PointRobotState):
         """Initialize the map being explored, current robot state, and the MPL"""
         """
         Attributes:
-            map: (Grid2D) The map, as explored so far. Initially, everything is unknown in this map.
+            map: (Grid3D) The map, as explored so far. Initially, everything is unknown in this map.
             state: (PointRobotState) The state of the robot.
             mpl: (PrimitiveLibrary) The motion primitive library generated from the state of the robot.
         """
         self.map = map
         self.state = state
-        self.mpl = PrimitiveLibrary.eight_connected(self.state)
+        self.mpl = PrimitiveLibrary.twentysix_connected(self.state)
 
-    def update_map(self, map: Grid2D):
+    def update_map(self, map: Grid3D):
         """Update the map after an observation has been incorported by an external mapper."""
         self.map = map
 
     def update_state(self, state: PointRobotState):
         """Update the state and the MPL after the robot moves as a consequence of taking an action."""
         self.state = state
-        self.mpl = PrimitiveLibrary.eight_connected(self.state)
+        self.mpl = PrimitiveLibrary.twentysix_connected(self.state)
 
     def is_feasible(self, mp: SimplePrimitive):
         """Make sure that the motion primitive `mp` is `feasible`. This is the `collision avoidance` aspect
@@ -144,6 +176,7 @@ class ExplorationPlanner:
 
     def take_action(self):
         sel_mp = self.selection_policy()
+        #print("Selected MP: ", sel_mp)
         if sel_mp is not None:
             next_c = sel_mp.start.c + sel_mp.dir
             next_state = PointRobotState.from_cell(next_c, sel_mp.start.res)
@@ -151,7 +184,7 @@ class ExplorationPlanner:
 
 
 class FrontierPlanner(ExplorationPlanner):
-    def __init__(self, map: Grid2D, state: PointRobotState):
+    def __init__(self, map: Grid3D, state: PointRobotState):
         super().__init__(map, state)
         # TODO: Assignment 4, Task 3.1
 
@@ -164,15 +197,10 @@ class FrontierPlanner(ExplorationPlanner):
         # TODO: Assignment 4, Task 3.1
         raise NotImplementedError
 
-
 class MIPlanner(ExplorationPlanner):
-    def __init__(self, map: Grid2D, state: PointRobotState):
+    def __init__(self, map: Grid3D, state: PointRobotState):
         super().__init__(map, state)
-        self.sensor = Sensor(max_range=2.0, num_rays=20)
-
-    def compute_mi(self, pos):
-        # TODO: Assignment 4, Task 4.1
-        raise NotImplementedError
+        self.sensor = Sensor(max_range=2.0, max_height=2.0, num_rays=50)
 
     def selection_policy(self):
         """Select a feasible motion primitive out of self.mpl using a information-theoretic exploration method.

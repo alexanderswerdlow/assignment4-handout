@@ -133,12 +133,6 @@ By default, the maximum timesteps given to the robot for exploration is 200.
 
 You should see a confused robot trying to (safely) figure out what exists in the world...
 
-https://github.com/mral-cmu/assignment4-handout/assets/7077226/3c1137bf-143e-4d62-a1e7-e010262f3e12
-
-and the final trajectory may look like
-
-<img src="./assets/random-traj.png" width="400" height="400"/>
-
 You will also see a plot for entropy of the explored map over time.
 
 Clearly this is not a good exploration strategy. However, we now have the infrastructure to test out
@@ -160,12 +154,6 @@ For a qualitative evaluation, you can run
 python explore_test.py -planner_type frontier
 ```
 You should see the robot exploring the environment much better than the random planner
-
-https://github.com/mral-cmu/assignment4-handout/assets/7077226/6f7ba18e-fa90-4388-88f5-3bc045e417c6
-
-with the final trajectory of the robot being more exploratory
-
-<img src="./assets/closest-point-frontier-traj.png" width="400" height="400"/>
 
 > [!IMPORTANT]
 > You will receive full credit for Tasks 3.1 and 2.2 if the following conditions are satisfied for all
@@ -250,6 +238,9 @@ Using this reward function, we now write the planner
 > [!NOTE]
 > There is a possibility for partial credit in Task 4.2. The score is assigned as (let maximum be 1.0):
 > `final_score = 0.2 * (# times MIPlanner faster than Random + # times MIPlanner faster than Frontier)`.
+
+Your results for the three planners should look like the video below, with Random first then Frontier then MI.
+<video src="https://github.com/mr-cmu/assignment4-handout/blob/main/assets/hw4-example-3d.mp4"></video>
 
 Just like the frontier-based case, you can run
 ```

@@ -240,7 +240,9 @@ Using this reward function, we now write the planner
 > `final_score = 0.2 * (# times MIPlanner faster than Random + # times MIPlanner faster than Frontier)`.
 
 Your results for the three planners should look like the video below, with Random first then Frontier then MI.
-<video src="https://github.com/mr-cmu/assignment4-handout/blob/main/assets/hw4-example-3d.mp4"></video>
+
+https://github.com/mr-cmu/assignment4-handout/assets/8121216/5cd7da79-7bd4-4a64-bb57-af96e4ba30ad
+
 
 Just like the frontier-based case, you can run
 ```

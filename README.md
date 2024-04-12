@@ -32,7 +32,7 @@ pip install cprint numpy matplotlib opencv-python scipy scikit-learn
 
 We assume a point-shape robot with a size equal to one cell in the occupancy grid map. The state of
 this robot is given by `PointRobotState` in `robot.py`. As in the mapping assignment, we assume that
-the robot is equipped with a 360 degree field-of-view range sensor (e.g. 3D LiDAR). The robot can 
+the robot is equipped with a 360 degree field-of-view range sensor (e.g. 3D LiDAR). The robot can
 explore various environments provided in the `test_data/` folder.
 
 To set up this functionality correctly, we will rely on the solution to the mapping assignment (Assignment 2).
@@ -160,7 +160,7 @@ You should see the robot exploring the environment much better than the random p
 > environments in `test_data/`:
 > 1. The robot never collides with the occupied space
 > 2. The robot never enters unknown space at any point during exploration
-> 
+>
 > and the following condition is satisfied for at least three environments:
 >
 > 3. The robot explores faster in frontier-based case compared to the random case. In other words, the average
@@ -224,25 +224,20 @@ Using this reward function, we now write the planner
 > environments in `test_data/`:
 > 1. The robot never collides with the occupied space
 > 2. The robot never enters unknown space at any point during exploration
-> 
+>
 > the following condition is satisfied for at least three environments:
 >
 > 3. The robot explores faster in this case compared to the random case. In other words, the average
 > entropy in the information-theoretic case should be lower than the random case.
 >
 > and the following condition is satisfied for at least two environments:
-> 
+>
 > 4. The robot explores faster in this case compared to the frontier-based case. In other words, the average
 > entropy in the information-theoretic case should be lower than the frontier-based case.
-
-> [!NOTE]
-> There is a possibility for partial credit in Task 4.2. The score is assigned as (let maximum be 1.0):
-> `final_score = 0.2 * (# times MIPlanner faster than Random + # times MIPlanner faster than Frontier)`.
 
 Your results for the three planners should look like the video below, with Random first then Frontier then MI.
 
 https://github.com/mr-cmu/assignment4-handout/assets/8121216/5cd7da79-7bd4-4a64-bb57-af96e4ba30ad
-
 
 Just like the frontier-based case, you can run
 ```

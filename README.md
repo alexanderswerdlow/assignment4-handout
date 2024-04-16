@@ -126,7 +126,7 @@ avoiding collisions. Intuitively, this is the most "naive" way in which the robo
 
 For a qualitative evaluation, you can run
 ```
-python explore_test.py -planner_type random
+python explore_test.py --planner-type random
 ```
 
 By default, the maximum timesteps given to the robot for exploration is 200.

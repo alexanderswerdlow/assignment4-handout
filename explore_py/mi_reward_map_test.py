@@ -23,7 +23,7 @@ def compute_all_mi(mi_grid: np.ndarray, prob_grid: Grid3D, planner_obj: MIPlanne
 
 def score_mi_reward():
     gt_grid = Grid3D(0.5, 50, 50, 10, 0.001, 0.999)
-    gt_grid = json_to_grid3d(gt_grid, 'test_data/simple_box.png')
+    gt_grid = json_to_grid3d(gt_grid, 'test_data/simple_box.json')
 
     exp_grid = Grid3D(0.5, 50, 50, 10, 0.001, 0.999)
     grid_min = exp_grid.cell_to_point_row_col_layer(0, 0, 0)

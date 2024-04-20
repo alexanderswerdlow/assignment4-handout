@@ -193,7 +193,7 @@ python explore_test.py --planner-type frontier --env i_love_mr
 ## 4. Information-Theoretic Exploration
 In frontier-based exploration, intuitively, the robot is "pushing" the "boundary" (frontier) of the unknown
 and free space. However, it does not reason about what it might gain beyond the boundary. To improve the
-performance further, we will not incorporate "information gain" as a "utility" of the frontier.
+performance further, we will now incorporate "information gain" as a "utility" of the frontier.
 
 Take a look at the class `MIPlanner`. You will notice that the sensor model is required
 to compute information that a potential observation at the frontier location may provide about the

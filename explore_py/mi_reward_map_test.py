@@ -51,7 +51,7 @@ def score_mi_reward():
     else:
         score1 = copy(overlap)
 
-    plot_obj = mi_ax.imshow(mi_grid, origin='lower', extent=(grid_min.x, grid_max.x,
+    plot_obj = mi_ax.imshow(mi_grid[:, :, 5], origin='lower', extent=(grid_min.x, grid_max.x,
                                                         grid_min.y, grid_max.y,
                                                         grid_min.z, grid_max.z) )
     hl = mi_fig.colorbar(plot_obj, ax=mi_ax)
@@ -72,7 +72,7 @@ def score_mi_reward():
         score2 = 1.0
     else:
         score2 = copy(overlap)
-    plot_obj.set_data(mi_grid)
+    plot_obj.set_data(mi_grid[:, :, 5])
     plt.draw()
     plt.pause(2.0)
 

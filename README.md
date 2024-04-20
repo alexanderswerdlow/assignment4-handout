@@ -151,7 +151,7 @@ method (ones studied in class or your own).
 
 For a qualitative evaluation, you can run
 ```
-python explore_test.py -planner_type frontier
+python explore_test.py --planner-type frontier
 ```
 You should see the robot exploring the environment much better than the random planner
 
@@ -187,7 +187,7 @@ The available environments in `test_data/` are `simple_box` and `i_love_mr`
 For visualization, you run frontier-based exploration with `explore_test` script in this manner for any
 environment (`-env` option):
 ```
-python explore_test.py -planner_type frontier -env i_love_mr
+python explore_test.py --planner-type frontier --env i_love_mr
 ```
 
 ## 4. Information-Theoretic Exploration

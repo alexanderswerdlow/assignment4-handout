@@ -205,11 +205,12 @@ class MIPlanner(ExplorationPlanner):
 
     def compute_mi(self, pos: Point) -> Tuple[float, bool]:
         """Compute the mutual information (MI) gain by observing at the input position `pos` in the map.
-        In other words, for all sensor rays emitted from the robot's position, sum up the entropy change 
+        In other words, for all sensor rays emitted from the given position, sum up the information gain
         from all the observed cells.
         Hints: 
             - use self.map.cell_entropy(cell) to calculate the entropy of a cell in the map.
-            - since we assume a perfect sensor model, the entropy change is the same as the information gain.
+            - since we assume a perfect sensor model, the current entropy of the cell is the same as 
+                the information gain (i.e. observation eliminates all entropy).
 
         Args:
             pos (Point): the robot's position in the map.

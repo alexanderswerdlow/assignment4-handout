@@ -19,7 +19,7 @@ git lfs pull
 
 Now, create a python virtual environment.
 ```bash
-python3.8 -m .venv venv
+python3.8 -m venv .venv
 ```
 Source the environment
 ```bash

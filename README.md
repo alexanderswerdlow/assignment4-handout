@@ -151,7 +151,7 @@ method (ones studied in class or your own).
 
 For a qualitative evaluation, you can run
 ```
-python explore_test.py -planner_type frontier
+python explore_test.py --planner-type frontier
 ```
 You should see the robot exploring the environment much better than the random planner
 
@@ -187,13 +187,13 @@ The available environments in `test_data/` are `simple_box` and `i_love_mr`
 For visualization, you run frontier-based exploration with `explore_test` script in this manner for any
 environment (`-env` option):
 ```
-python explore_test.py -planner_type frontier -env i_love_mr
+python explore_test.py --planner-type frontier --env i_love_mr
 ```
 
 ## 4. Information-Theoretic Exploration
 In frontier-based exploration, intuitively, the robot is "pushing" the "boundary" (frontier) of the unknown
 and free space. However, it does not reason about what it might gain beyond the boundary. To improve the
-performance further, we will not incorporate "information gain" as a "utility" of the frontier.
+performance further, we will now incorporate "information gain" as a "utility" of the frontier.
 
 Take a look at the class `MIPlanner`. You will notice that the sensor model is required
 to compute information that a potential observation at the frontier location may provide about the

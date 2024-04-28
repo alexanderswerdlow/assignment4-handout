@@ -1,6 +1,7 @@
 """Classes for Robotic Exploration planning, 16-761: Mobile Robot Algorithms Laboratory
 """
 
+from typing import Tuple
 import numpy as np
 import math
 from copy import copy
@@ -201,6 +202,24 @@ class MIPlanner(ExplorationPlanner):
     def __init__(self, map: Grid3D, state: PointRobotState):
         super().__init__(map, state)
         self.sensor = Sensor(max_range=2.0, max_height=2.0, num_rays=50)
+
+    def compute_mi(self, pos: Point) -> Tuple[float, bool]:
+        """Compute the mutual information (MI) gain by observing at the input position `pos` in the map.
+        In other words, for all sensor rays emitted from the given position, sum up the information gain
+        from all the observed cells.
+        Hints: 
+            - use self.map.cell_entropy(cell) to calculate the entropy of a cell in the map.
+            - since we assume a perfect sensor model, the current entropy of the cell is the same as 
+                the information gain (i.e. observation eliminates all entropy).
+
+        Args:
+            pos (Point): the robot's position in the map.
+
+        Returns:
+            Tuple[float, bool]: Return (1) the information gain and (2) a boolean indicating whether the 
+                input position is valid.
+        """
+        pass
 
     def selection_policy(self):
         """Select a feasible motion primitive out of self.mpl using a information-theoretic exploration method.

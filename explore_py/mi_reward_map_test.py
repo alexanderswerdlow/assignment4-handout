@@ -27,8 +27,8 @@ def score_mi_reward():
 
     exp_grid = Grid3D(0.5, 50, 50, 10, 0.001, 0.999)
     grid_min = exp_grid.cell_to_point_row_col_layer(0, 0, 0)
-    grid_max = exp_grid.cell_to_point_row_col_layer(exp_grid.height, exp_grid.width, exp_grid.depth)
-    mi_grid = -10000 * np.ones((exp_grid.height, exp_grid.width, exp_grid.depth))
+    grid_max = exp_grid.cell_to_point_row_col_layer(exp_grid.depth, exp_grid.width, exp_grid.height)
+    mi_grid = -10000 * np.ones((exp_grid.depth, exp_grid.width, exp_grid.height))
 
     mi_fig, mi_ax = plt.subplots()
 
@@ -44,14 +44,14 @@ def score_mi_reward():
 
     score1 = 0.0
     compute_all_mi(mi_grid, planner_obj.map, planner_obj)
-    soln1 = np.load('output/mi_grid1.npz')['arr_0']
+    soln1 = np.load('test_data/mi_grid1.npz')['arr_0']
     overlap = np.mean(soln1 == mi_grid)
     if overlap >= 0.95:
         score1 = 1.0
     else:
         score1 = copy(overlap)
 
-    plot_obj = mi_ax.imshow(mi_grid, origin='lower', extent=(grid_min.x, grid_max.x,
+    plot_obj = mi_ax.imshow(mi_grid[:, :, 5], origin='lower', extent=(grid_min.x, grid_max.x,
                                                         grid_min.y, grid_max.y,
                                                         grid_min.z, grid_max.z) )
     hl = mi_fig.colorbar(plot_obj, ax=mi_ax)
@@ -66,14 +66,13 @@ def score_mi_reward():
 
     score2 = 0.0
     compute_all_mi(mi_grid, planner_obj.map, planner_obj)
-    soln2 = np.load('output/mi_grid2.npz')['arr_0']
+    soln2 = np.load('test_data/mi_grid2.npz')['arr_0']
     overlap = np.mean(soln2 == mi_grid)
     if overlap >= 0.95:
         score2 = 1.0
     else:
         score2 = copy(overlap)
-    np.savez('output/mi_grid2.npz', mi_grid)
-    plot_obj.set_data(mi_grid)
+    plot_obj.set_data(mi_grid[:, :, 5])
     plt.draw()
     plt.pause(2.0)
 

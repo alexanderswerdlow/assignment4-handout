@@ -11,6 +11,9 @@ class PointRobotState:
         self.c = cell
         self.p = pos
 
+    def __repr__(self) -> str:
+        return f"PointRobotState(p={self.p}, c={self.c}, resolution={self.res})"
+
     @classmethod
     def from_cell(cls, cell: Cell, resolution: float):
         p = Point()

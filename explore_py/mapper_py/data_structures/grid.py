@@ -24,9 +24,9 @@ class Cell:
         self.row = row
         self.col = col
         self.layer = layer
-
-    def __str__(self):
-        return f'Cell(row: {self.row}, col: {self.col}, layer: {self.layer})'
+    
+    def __repr__(self):
+        return f"Cell(row={self.row}, col={self.col}, layer={self.layer})"
 
     def to_numpy(self):
         """Return a numpy array with the cell row and col."""
@@ -69,9 +69,9 @@ class Point:
 
     def __abs__(self):
         return (self.x ** 2 + self.y ** 2 + self.z ** 2) ** 0.5
-
-    def __str__(self):
-        return f'Point(x: {self.x}, y: {self.y}, z: {self.z})'
+    
+    def __repr__(self):
+        return f"Point(x={self.x}, y={self.y}, z={self.z})"
 
     def __eq__(self, second):
         if isinstance(second, Point):
@@ -175,6 +175,9 @@ class Grid3D:
         # C++ (mapping is computationally expensive), so it's good to learn how to manipulate 
         # the data without numpy training wheels
         self.data = [0.0] * self.N
+
+    def __repr__(self):
+        return f"Grid3D(width={self.width}, depth={self.depth}, height={self.height}, resolution={self.resolution}, N={self.N}, min_clamp={self.min_clamp}, max_clamp={self.max_clamp}, free_thres={self.free_thres}, occ_thres={self.occ_thres})"
 
     def to_numpy(self):
         """Export the grid in the form of a 3D numpy matrix.

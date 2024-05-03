@@ -27,6 +27,9 @@ class SimplePrimitive:
         self.dir = d
         self.start = start
 
+    def __repr__(self) -> str: 
+        return f"SimplePrimitive(Start: {self.start}, Dir: {self.dir})"
+
     def end(self, step: int = 1):
         """Compute the end state of the primitive depending on the number of cells (step)
 
